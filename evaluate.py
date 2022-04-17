@@ -47,8 +47,8 @@ if not os.path.exists(RESULTS_FOLDER): os.mkdir(RESULTS_FOLDER)
 
 NUMBER_NEIBORS = 25
 
-DATABASE_FILE= 'generating_queries/'+ dataset +'_evaluation_database.pickle'
-QUERY_FILE= 'generating_queries/' + dataset + '_evaluation_query.pickle'
+DATABASE_FILE= os.path.join(os.path.dirname(BASE_DIR), 'datasets/pickles/python3.6/tum_evaluation_frame_5m_database.pickle')
+QUERY_FILE= os.path.join(os.path.dirname(BASE_DIR), 'datasets/pickles/python3.6/tum_evaluation_frame_5m_query.pickle')
 
 
 output_file= RESULTS_FOLDER +'baseline_results_'+dataset+'_'+model_file+'.txt'

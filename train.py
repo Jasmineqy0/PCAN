@@ -46,8 +46,8 @@ DECAY_RATE = FLAGS.decay_rate
 MARGIN1 = FLAGS.margin_1
 MARGIN2 = FLAGS.margin_2
 
-TRAIN_FILE = 'generating_queries/training_queries_baseline.pickle'
-TEST_FILE = 'generating_queries/test_queries_baseline.pickle'
+TRAIN_FILE = os.path.join(os.path.dirname(BASE_DIR), 'datasets/pickles/python3.6/tum_training_queries_frame_5m_baseline.pickle')
+TEST_FILE = os.path.join(os.path.dirname(BASE_DIR), 'datasets/pickles/python3.6/tum_test_queries_frame_5m_baseline.pickle')
 
 LOG_DIR = FLAGS.log_dir
 if not os.path.exists(LOG_DIR): os.mkdir(LOG_DIR)
@@ -346,9 +346,10 @@ def train_one_epoch(sess, ops, train_writer, test_writer, epoch, saver):
                 eval_loss+=e_loss
                 if(eval_batch==4):
                     test_writer.add_summary(e_summary, e_step)
-            average_eval_loss= float(eval_loss)/eval_batches_counted
-            log_string('\t\t\tEVAL')
-            log_string('\t\t\teval_loss: %f' %average_eval_loss)
+            if eval_batches_counted != 0:
+                average_eval_loss= float(eval_loss)/eval_batches_counted
+                log_string('\t\t\tEVAL')
+                log_string('\t\t\teval_loss: %f' %average_eval_loss)
 
         if(epoch>5 and i%10000 ==29):
             #update cached feature vectors

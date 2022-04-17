@@ -12,10 +12,10 @@ sys.path.append('/home/zwx/ZWX/pointnetvlad (3rd copy)/tf_ops/sampling')
 sys.path.append('/home/zwx/ZWX/pointnetvlad (3rd copy)/tf_ops/grouping')
 sys.path.append('/home/zwx/ZWX/pointnetvlad (3rd copy)/tf_ops/3d_interpolation')
 sys.path.append(BASE_DIR)
-sys.path.append(os.path.join(ROOT_DIR, 'utils'))
-sys.path.append(os.path.join(ROOT_DIR, 'tf_ops/sampling'))
-sys.path.append(os.path.join(ROOT_DIR, 'tf_ops/grouping'))
-sys.path.append(os.path.join(ROOT_DIR, 'tf_ops/3d_interpolation'))
+sys.path.append(os.path.join(BASE_DIR, 'utils'))
+sys.path.append(os.path.join(BASE_DIR, 'tf_ops/sampling'))
+sys.path.append(os.path.join(BASE_DIR, 'tf_ops/grouping'))
+sys.path.append(os.path.join(BASE_DIR, 'tf_ops/3d_interpolation'))
 from tf_sampling import farthest_point_sample, gather_point
 from tf_grouping import query_ball_point, group_point, knn_point
 from tf_interpolate import three_nn, three_interpolate
