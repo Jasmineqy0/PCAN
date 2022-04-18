@@ -26,6 +26,8 @@ g++ -w -std=c++11 tf_interpolate.cpp -o tf_interpolate_so.so -shared -fPIC \
 
 cd /home/PCAN/tf_ops/grouping/
 
+nvcc tf_grouping_g.cu -o tf_grouping_g.cu.o -c -O2 -DGOOGLE_CUDA=1 -x cu -Xcompiler -fPIC -Wno-deprecated-gpu-targets
+
 g++ -w -std=c++11 tf_grouping.cpp tf_grouping_g.cu.o -o tf_grouping_so.so -shared -fPIC \
     -I $TF_PREFIX"/include" -I $CUDA_PREDIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
     -lcudart -L $CUDA_PREDIX"/lib64/" -L $TF_PREFIX \
