@@ -18,8 +18,8 @@ all_folders=sorted(os.listdir(os.path.join(BASE_DIR,base_path,runs_folder)))
 folders=[]
 
 #All runs are used for training (both full and partial)
-index_list=range(len(all_folders)-1)
-print("Number of runs: "+str(len(index_list)))
+index_list=list(range(len(all_folders)-1))
+print(("Number of runs: "+str(len(index_list))))
 for index in index_list:
 	folders.append(all_folders[index])
 print(folders)
@@ -59,7 +59,7 @@ def construct_query_dict(df_centroids, filename):
 	with open(filename, 'wb') as handle:
 	    pickle.dump(queries, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-	print("Done ", filename)
+	print(("Done ", filename))
 
 
 ####Initialize pandas DataFrame
@@ -77,8 +77,8 @@ for folder in folders:
 		else:
 			df_train=df_train.append(row, ignore_index=True)
 
-print("Number of training submaps: "+str(len(df_train['file'])))
-print("Number of non-disjoint test submaps: "+str(len(df_test['file'])))
+print(("Number of training submaps: "+str(len(df_train['file']))))
+print(("Number of non-disjoint test submaps: "+str(len(df_test['file']))))
 construct_query_dict(df_train,"training_queries_baseline.pickle")
 construct_query_dict(df_test,"test_queries_baseline.pickle")
 

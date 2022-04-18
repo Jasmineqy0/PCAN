@@ -130,14 +130,14 @@ def evaluate():
         similarity=[]
         one_percent_recall=[]
 
-        print('len(DATABASE_SETS)', len(DATABASE_SETS))
-        print('len(QUERY_SETS)', len(QUERY_SETS))
+        print(('len(DATABASE_SETS)', len(DATABASE_SETS)))
+        print(('len(QUERY_SETS)', len(QUERY_SETS)))
 
         for i in range(len(DATABASE_SETS)):
             DATABASE_VECTORS.append(get_latent_vectors(sess, ops, DATABASE_SETS[i]))
 
         for j in range(len(QUERY_SETS)):
-            print('QUERY_SETS[j]', QUERY_SETS[j])
+            print(('QUERY_SETS[j]', QUERY_SETS[j]))
             QUERY_VECTORS.append(get_latent_vectors(sess, ops, QUERY_SETS[j]))
 
         for m in range(len(QUERY_SETS)):
@@ -177,7 +177,7 @@ def evaluate():
 
 def get_latent_vectors(sess, ops, dict_to_process):
     is_training=False
-    train_file_idxs = np.arange(0, len(dict_to_process.keys()))
+    train_file_idxs = np.arange(0, len(list(dict_to_process.keys())))
     #print(len(train_file_idxs))
     batch_num= BATCH_NUM_QUERIES*(1+POSITIVES_PER_QUERY+NEGATIVES_PER_QUERY)
     q_output = []
@@ -222,7 +222,7 @@ def get_latent_vectors(sess, ops, dict_to_process):
     #print(q_output.shape)
 
     #handle edge case
-    for q_index in range((len(train_file_idxs)//batch_num*batch_num),len(dict_to_process.keys())):
+    for q_index in range((len(train_file_idxs)//batch_num*batch_num),len(list(dict_to_process.keys()))):
         index=train_file_idxs[q_index]
         queries=load_pc_files([dict_to_process[index]["query"]])
         queries= np.expand_dims(queries,axis=1)
@@ -245,7 +245,7 @@ def get_latent_vectors(sess, ops, dict_to_process):
 
     #q_output=np.array(q_output)
     #q_output=q_output.reshape(-1,q_output.shape[-1])
-    print(q_output.shape)
+    print((q_output.shape))
     return q_output
 
 def get_recall(sess, ops, m, n):
@@ -255,9 +255,9 @@ def get_recall(sess, ops, m, n):
     database_output= DATABASE_VECTORS[m]
     queries_output= QUERY_VECTORS[n]
 
-    print('database_output', len(database_output))
+    print(('database_output', len(database_output)))
 
-    print('queries_output', len(queries_output))
+    print(('queries_output', len(queries_output)))
     database_nbrs = KDTree(database_output)
 
     num_neighbors=25
@@ -278,13 +278,13 @@ def get_recall(sess, ops, m, n):
         num_evaluated+=1
         distances, indices = database_nbrs.query(np.array([queries_output[i]]),k=num_neighbors)
 
-        print('QUERY_SETS[n][i]', QUERY_SETS[n][i])
-        print('indices[0]', indices[0])
-        print('true_neighbors', true_neighbors)
+        print(('QUERY_SETS[n][i]', QUERY_SETS[n][i]))
+        print(('indices[0]', indices[0]))
+        print(('true_neighbors', true_neighbors))
 
         for j in range(len(indices[0])):
             if (j < 3):
-                print('DATABASE_SETS[m][indices[0][j]]', DATABASE_SETS[m][indices[0][j]])
+                print(('DATABASE_SETS[m][indices[0][j]]', DATABASE_SETS[m][indices[0][j]]))
             if indices[0][j] in true_neighbors:
                 if(j==0):
                     similarity= np.dot(queries_output[i],database_output[indices[0][j]])
@@ -298,8 +298,8 @@ def get_recall(sess, ops, m, n):
     one_percent_recall=(one_percent_retrieved/float(num_evaluated))*100
     recall=(np.cumsum(recall)/float(num_evaluated))*100
     print(recall)
-    print(np.mean(top1_similarity_score))
-    print('one_percent_recall',one_percent_recall)
+    print((np.mean(top1_similarity_score)))
+    print(('one_percent_recall',one_percent_recall))
     return recall, top1_similarity_score, one_percent_recall 
 
 def get_similarity(sess, ops, m, n):
@@ -310,7 +310,7 @@ def get_similarity(sess, ops, m, n):
     queries_output= QUERY_VECTORS[n]
 
     threshold= len(queries_output)
-    print(len(queries_output))
+    print((len(queries_output)))
     database_nbrs = KDTree(database_output)
 
     similarity=[]

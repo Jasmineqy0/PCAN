@@ -40,7 +40,7 @@ def check_in_test_set(northing, easting, points, x_width, y_width):
 def output_to_file(output, filename):
 	with open(filename, 'wb') as handle:
 	    pickle.dump(output, handle, protocol=pickle.HIGHEST_PROTOCOL)
-	print("Done ", filename)
+	print(("Done ", filename))
 
 
 def construct_query_and_database_sets(base_path, runs_folder, folders, pointcloud_fols, filename, p, output_name):
@@ -78,10 +78,10 @@ def construct_query_and_database_sets(base_path, runs_folder, folders, pointclou
 		for index,row in df_locations.iterrows():				
 			#entire business district is in the test set
 			if(output_name=="business"):
-				test[len(test.keys())]={'query':row['file'],'northing':row['northing'],'easting':row['easting']}
+				test[len(list(test.keys()))]={'query':row['file'],'northing':row['northing'],'easting':row['easting']}
 			elif(check_in_test_set(row['northing'], row['easting'], p, x_width, y_width)):
-				test[len(test.keys())]={'query':row['file'],'northing':row['northing'],'easting':row['easting']}
-			database[len(database.keys())]={'query':row['file'],'northing':row['northing'],'easting':row['easting']}
+				test[len(list(test.keys()))]={'query':row['file'],'northing':row['northing'],'easting':row['easting']}
+			database[len(list(database.keys()))]={'query':row['file'],'northing':row['northing'],'easting':row['easting']}
 		database_sets.append(database)
 		test_sets.append(test)		
 
@@ -90,7 +90,7 @@ def construct_query_and_database_sets(base_path, runs_folder, folders, pointclou
 		for j in range(len(test_sets)):
 			if(i==j):
 				continue
-			for key in range(len(test_sets[j].keys())):
+			for key in range(len(list(test_sets[j].keys()))):
 				coor=np.array([[test_sets[j][key]["northing"],test_sets[j][key]["easting"]]])
 				index = tree.query_radius(coor, r=25)
 				#indices of the positive matches in database i of each query (key) in test set j
@@ -108,7 +108,7 @@ folders=[]
 runs_folder = "oxford/"
 all_folders=sorted(os.listdir(os.path.join(BASE_DIR,base_path,runs_folder)))
 index_list=[5,6,7,9,10,11,12,13,14,15,16,17,18,19,22,24,31,32,33,38,39,43,44]
-print(len(index_list))
+print((len(index_list)))
 for index in index_list:
 	folders.append(all_folders[index])
 
@@ -119,7 +119,7 @@ construct_query_and_database_sets(base_path, runs_folder, folders, "/pointcloud_
 folders=[]
 runs_folder = "inhouse_datasets/"
 all_folders=sorted(os.listdir(os.path.join(BASE_DIR,base_path,runs_folder)))
-uni_index=range(10,15)
+uni_index=list(range(10,15))
 for index in uni_index:
 	folders.append(all_folders[index])
 
@@ -130,7 +130,7 @@ construct_query_and_database_sets(base_path, runs_folder, folders, "/pointcloud_
 folders=[]
 runs_folder = "inhouse_datasets/"
 all_folders=sorted(os.listdir(os.path.join(BASE_DIR,base_path,runs_folder)))
-res_index=range(5,10)
+res_index=list(range(5,10))
 for index in res_index:
 	folders.append(all_folders[index])
 
@@ -141,7 +141,7 @@ construct_query_and_database_sets(base_path, runs_folder, folders, "/pointcloud_
 folders=[]
 runs_folder = "inhouse_datasets/"
 all_folders=sorted(os.listdir(os.path.join(BASE_DIR,base_path,runs_folder)))
-bus_index=range(5)
+bus_index=list(range(5))
 for index in bus_index:
 	folders.append(all_folders[index])
 

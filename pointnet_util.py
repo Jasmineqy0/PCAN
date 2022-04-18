@@ -75,7 +75,7 @@ def sample_and_group_all(xyz, points, use_xyz=True):
     batch_size = xyz.get_shape()[0].value
     nsample = xyz.get_shape()[1].value
     new_xyz = tf.constant(np.tile(np.array([0,0,0]).reshape((1,1,3)), (batch_size,1,1)),dtype=tf.float32) # (batch_size, 1, 3)
-    idx = tf.constant(np.tile(np.array(range(nsample)).reshape((1,1,nsample)), (batch_size,1,1)))
+    idx = tf.constant(np.tile(np.array(list(range(nsample))).reshape((1,1,nsample)), (batch_size,1,1)))
     grouped_xyz = tf.reshape(xyz, (batch_size, 1, nsample, 3)) # (batch_size, npoint=1, nsample, 3)
     if points is not None:
         if use_xyz:
@@ -214,7 +214,7 @@ def pointnet_fp_module(xyz1, xyz2, points1, points2, mlp, is_training, bn_decay,
     with tf.variable_scope(scope) as sc:
             dist, idx = three_nn(xyz1, xyz2)
             dist = tf.maximum(dist, 1e-10)
-            norm = tf.reduce_sum((1.0/dist),axis=2, keepdims=True)
+            norm = tf.reduce_sum((1.0/dist),axis=2, keep_dims=True)
             norm = tf.tile(norm,[1,1,3])
             weight = (1.0/dist) / norm
             with tf.device('/cpu:0'):

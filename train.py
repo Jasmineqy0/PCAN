@@ -206,7 +206,7 @@ def train_one_epoch(sess, ops, train_writer, test_writer, epoch, saver):
     num_to_take=5
 
     # Shuffle train files
-    train_file_idxs = np.arange(0, len(TRAINING_QUERIES.keys()))
+    train_file_idxs = np.arange(0, len(list(TRAINING_QUERIES.keys())))
     np.random.shuffle(train_file_idxs)
 
     for i in range(len(train_file_idxs)//BATCH_NUM_QUERIES):
@@ -226,12 +226,12 @@ def train_one_epoch(sess, ops, train_writer, test_writer, epoch, saver):
                 q_tuples.append(get_rotated_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_neg=[], other_neg=True))
                 # q_tuples.append(get_jittered_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_neg=[], other_neg=True))
 
-            elif(len(HARD_NEGATIVES.keys())==0):
+            elif(len(list(HARD_NEGATIVES.keys()))==0):
                 query=get_feature_representation(TRAINING_QUERIES[batch_keys[j]]['query'], sess, ops)
                 random.shuffle(TRAINING_QUERIES[batch_keys[j]]['negatives'])
                 negatives=TRAINING_QUERIES[batch_keys[j]]['negatives'][0:sampled_neg]
                 hard_negs= get_random_hard_negatives(query, negatives, num_to_take)
-                print('hard_negs', hard_negs)
+                print(('hard_negs', hard_negs))
                 #q_tuples.append(get_query_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_negs, other_neg=True))
                 q_tuples.append(get_rotated_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_negs, other_neg=True))
                 # q_tuples.append(get_jittered_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_negs, other_neg=True))
@@ -241,7 +241,7 @@ def train_one_epoch(sess, ops, train_writer, test_writer, epoch, saver):
                 negatives=TRAINING_QUERIES[batch_keys[j]]['negatives'][0:sampled_neg]
                 hard_negs= get_random_hard_negatives(query, negatives, num_to_take)
                 hard_negs= list(set().union(HARD_NEGATIVES[batch_keys[j]], hard_negs))
-                print('hard',hard_negs)
+                print(('hard',hard_negs))
                 #q_tuples.append(get_query_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_negs, other_neg=True))
                 q_tuples.append(get_rotated_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_negs, other_neg=True))
                 # q_tuples.append(get_jittered_tuple(TRAINING_QUERIES[batch_keys[j]],POSITIVES_PER_QUERY,NEGATIVES_PER_QUERY, TRAINING_QUERIES, hard_negs, other_neg=True))
@@ -292,7 +292,7 @@ def train_one_epoch(sess, ops, train_writer, test_writer, epoch, saver):
         log_string('batch loss: %f' % loss_val)
 
         if(i%200==7):
-            test_file_idxs = np.arange(0,len(TEST_QUERIES.keys()))
+            test_file_idxs = np.arange(0,len(list(TEST_QUERIES.keys())))
             np.random.shuffle(test_file_idxs)
 
             eval_loss=0
@@ -396,7 +396,7 @@ def get_random_hard_negatives(query_vec, random_negs, num_to_take):
 
 def get_latent_vectors(sess, ops, dict_to_process):
     is_training=False
-    train_file_idxs = np.arange(0, len(dict_to_process.keys()))
+    train_file_idxs = np.arange(0, len(list(dict_to_process.keys())))
 
     batch_num= BATCH_NUM_QUERIES*(1+POSITIVES_PER_QUERY+NEGATIVES_PER_QUERY+1)
     q_output = []
@@ -430,12 +430,12 @@ def get_latent_vectors(sess, ops, dict_to_process):
     q_output=np.array(q_output)
     if(len(q_output)!=0):  
         q_output=q_output.reshape(-1,q_output.shape[-1])
-    print('q_output', q_output)
+    print(('q_output', q_output))
     #handle edge case
 
     print('edge case')
 
-    for q_index in range((len(train_file_idxs)//batch_num*batch_num),len(dict_to_process.keys())):
+    for q_index in range((len(train_file_idxs)//batch_num*batch_num),len(list(dict_to_process.keys()))):
         index=train_file_idxs[q_index]
         queries=load_pc_files([dict_to_process[index]["query"]])
         queries= np.expand_dims(queries,axis=1)
@@ -458,7 +458,7 @@ def get_latent_vectors(sess, ops, dict_to_process):
         else:
             q_output=output
 
-    print(q_output.shape)
+    print((q_output.shape))
     return q_output
 
 if __name__ == "__main__":

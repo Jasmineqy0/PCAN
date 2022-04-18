@@ -44,7 +44,7 @@ def construct_query_dict(df_centroids, filename):
 	ind_nn = tree.query_radius(df_centroids[['northing','easting']],r=12.5)
 	ind_r = tree.query_radius(df_centroids[['northing','easting']], r=50)
 	queries={}
-	print(len(ind_nn))
+	print((len(ind_nn)))
 	for i in range(len(ind_nn)):
 		query=df_centroids.iloc[i]["file"]
 		positives=np.setdiff1d(ind_nn[i],[i]).tolist()
@@ -55,7 +55,7 @@ def construct_query_dict(df_centroids, filename):
 	with open(filename, 'wb') as handle:
 	    pickle.dump(queries, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-	print("Done ", filename)
+	print(("Done ", filename))
 
 
 
@@ -68,7 +68,7 @@ pointcloud_fols="/pointcloud_25m_10/"
 all_folders=sorted(os.listdir(os.path.join(BASE_DIR,base_path,runs_folder)))
 
 folders=[]
-index_list=range(5,15)
+index_list=list(range(5,15))
 for index in index_list:
 	folders.append(all_folders[index])
 
@@ -87,7 +87,7 @@ for folder in folders:
 		else:
 			df_train=df_train.append(row, ignore_index=True)
 
-print(len(df_train['file']))
+print((len(df_train['file'])))
 
 
 ##Combine with Oxford data
@@ -98,7 +98,7 @@ pointcloud_fols="/pointcloud_20m_10overlap/"
 all_folders=sorted(os.listdir(os.path.join(BASE_DIR,base_path,runs_folder)))
 
 folders=[]
-index_list=range(len(all_folders)-1)
+index_list=list(range(len(all_folders)-1))
 for index in index_list:
 	folders.append(all_folders[index])
 
@@ -114,6 +114,6 @@ for folder in folders:
 		else:
 			df_train=df_train.append(row, ignore_index=True)
 
-print("Number of training submaps: "+str(len(df_train['file'])))
+print(("Number of training submaps: "+str(len(df_train['file']))))
 construct_query_dict(df_train,"training_queries_refine.pickle")
 

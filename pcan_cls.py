@@ -36,7 +36,7 @@ def forward(point_cloud, is_training, bn_decay=None):
     point_cloud_transformed = tf.matmul(point_cloud, input_transform)
     input_image = tf.expand_dims(point_cloud_transformed, -1)
 
-    print ('input_image:', input_image)
+    print(('input_image:', input_image))
 
     net = tf_util.conv2d(input_image, 64, [1,3],
                          padding='VALID', stride=[1,1],
@@ -65,7 +65,7 @@ def forward(point_cloud, is_training, bn_decay=None):
                          is_training=is_training,
                          scope='conv5', bn_decay=bn_decay)
 
-    print ('net:', net)
+    print(('net:', net))
 
     net= tf.reshape(net,[-1,1024])
     net = tf.nn.l2_normalize(net,1)
@@ -100,16 +100,16 @@ def SARE_loss(q_vec, pos_vecs, neg_vecs):
     query_copies_p = tf.tile(q_vec, [1, int(num_pos), 1])
     num_neg = neg_vecs.get_shape()[1]
     dif_p = -tf.reduce_sum(tf.squared_difference(pos_vecs, query_copies_p), 2)
-    print('dif_p', dif_p)
+    print(('dif_p', dif_p))
     p_exp = tf.reduce_sum(tf.exp(dif_p), 1)
     #p_exp = tf.reduce_sum(p_exp, 1)
-    print('p_exp', p_exp)
+    print(('p_exp', p_exp))
     query_copies_n = tf.tile(q_vec, [1, int(num_neg), 1])
     dif_n = -tf.reduce_sum(tf.squared_difference(neg_vecs, query_copies_n), 2)
-    print('dif_p', dif_n)
+    print(('dif_p', dif_n))
     n_exp = tf.reduce_sum(tf.exp(dif_n), 1)
     #n_exp = tf.reduce_sum(n_exp, 1)
-    print('n_exp', n_exp)
+    print(('n_exp', n_exp))
     loss = tf.reduce_sum(-tf.log(tf.div(p_exp, (p_exp + n_exp))))
     return loss
 
@@ -270,26 +270,26 @@ def vlad_forward(xyz, reshaped_input, feature_size=1024, max_samples=4096, clust
                                               mlp=[256, 512], mlp2=None, group_all=True, is_training=is_training,
                                               bn_decay=bn_decay, scope='layer3')
 
-    print('l2_points:', l2_points)
+    print(('l2_points:', l2_points))
 
     l1_points = pointnet_fp_module(l1_xyz, l2_xyz, l1_points, l2_points, [256,128], is_training, bn_decay, scope='fa_layer2')
     l0_points = pointnet_fp_module(xyz, l1_xyz, tf.concat([xyz,input],axis=-1), l1_points, [128,128], is_training, bn_decay, scope='fa_layer3')
 
-    print('l0_points shape', l0_points)
+    print(('l0_points shape', l0_points))
 
     net = tf_util.conv1d(l0_points, 1, 1, padding='VALID', bn=True, is_training=is_training, scope='fc1', bn_decay=bn_decay)
     net = tf_util.dropout(net, keep_prob=0.5, is_training=is_training, scope='dp1')
     net = tf_util.conv1d(net, 1, 1, padding='VALID', activation_fn=None, scope='fc2')
 
     m = tf.reshape(net, [-1, 1])
-    print('m:', m)
+    print(('m:', m))
 
     #constrain weights to [0, 1]
     m = tf.nn.sigmoid(m)
     weights = m
     m = tf.tile(m, [1, cluster_size])
 
-    print('m:', m)
+    print(('m:', m))
 
     cluster_weights = tf.get_variable("cluster_weights",
                                       [feature_size, cluster_size],
@@ -331,7 +331,7 @@ def vlad_forward(xyz, reshaped_input, feature_size=1024, max_samples=4096, clust
     activation = tf.reshape(activation_crn,
                             [-1, max_samples, cluster_size])
 
-    a_sum = tf.reduce_sum(activation, -2, keepdims=True)
+    a_sum = tf.reduce_sum(activation, -2, keep_dims=True)
 
     cluster_weights2 = tf.get_variable("cluster_weights2",
                                        [1, feature_size, cluster_size],
