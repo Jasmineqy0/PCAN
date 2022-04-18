@@ -1,3 +1,7 @@
+apt install gcc-5 g++-5
+ln -s /usr/bin/gcc-5 /usr/local/cuda/bin/gcc
+ln -s /usr/bin/g++-5 /usr/local/cuda/bin/g++
+
 TF_INC=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_include())')
 TF_LIB=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_lib())')
 
