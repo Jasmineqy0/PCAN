@@ -10,18 +10,18 @@ cd /home/PCAN/tf_ops/sampling/
 nvcc tf_sampling_g.cu -o tf_sampling_g.cu.o -c -O2 -DGOOGLE_CUDA=1 -x cu -Xcompiler -fPIC -Wno-deprecated-gpu-targets
 
 export TF_PREFIX="/root/.pyenv/versions/3.6.5/lib/python3.6/site-packages/tensorflow"
-export CUDA_PREDIX="/usr/local/cuda-8.0"
+export CUDA_PREFIX="/usr/local/cuda-8.0"
 
 g++ -w -std=c++11 tf_sampling.cpp tf_sampling_g.cu.o -o tf_sampling_so.so -shared -fPIC \
-    -I $TF_PREFIX"/include" -I $CUDA_PREDIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
+    -I $TF_PREFIX"/include" -I $CUDA_PREFIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
     -lcudart -L $CUDA_PREDIX"/lib64/" -L $TF_PREFIX \
     -O2 -D_GLIBCXX_USE_CXX11_ABI=0 -I$TF_INC/external/nsync/public -L$TF_LIB -ltensorflow_framework
 
 cd /home/PCAN/tf_ops/3d_interpolation/
 
-g++ -w -std=c++11 tf_interpolate.cpp -o tf_interpolate_so.so -shared -fPIC \ 
+g++ -w -std=c++11 tf_interpolate.cpp -o tf_interpolate_so.so -shared -fPIC \
     -I $TF_PREFIX"/include" -I $CUDA_PREFIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
-    -lcudart -L $CUDA_PREDIX"/lib64/" -L $TF_PREFIX \
+    -lcudart -L $CUDA_PREFIX"/lib64/" -L $TF_PREFIX \
     -ltensorflow_framework -O2 -D_GLIBCXX_USE_CXX11_ABI=0 -I$TF_INC/external/nsync/public -L$TF_LIB -ltensorflow_framework
 
 cd /home/PCAN/tf_ops/grouping/
@@ -29,8 +29,8 @@ cd /home/PCAN/tf_ops/grouping/
 nvcc tf_grouping_g.cu -o tf_grouping_g.cu.o -c -O2 -DGOOGLE_CUDA=1 -x cu -Xcompiler -fPIC -Wno-deprecated-gpu-targets
 
 g++ -w -std=c++11 tf_grouping.cpp tf_grouping_g.cu.o -o tf_grouping_so.so -shared -fPIC \
-    -I $TF_PREFIX"/include" -I $CUDA_PREDIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
-    -lcudart -L $CUDA_PREDIX"/lib64/" -L $TF_PREFIX \
+    -I $TF_PREFIX"/include" -I $CUDA_PREFIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
+    -lcudart -L $CUDA_PREFIX"/lib64/" -L $TF_PREFIX \
     -ltensorflow_framework -O2 -D_GLIBCXX_USE_CXX11_ABI=0 -I$TF_INC/external/nsync/public -L$TF_LIB -ltensorflow_framework
 
 
