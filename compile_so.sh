@@ -20,7 +20,7 @@ g++ -w -std=c++11 tf_sampling.cpp tf_sampling_g.cu.o -o tf_sampling_so.so -share
 cd /home/PCAN/tf_ops/3d_interpolation/
 
 g++ -w -std=c++11 tf_interpolate.cpp -o tf_interpolate_so.so -shared -fPIC \ 
-    -I $TF_PREFIX"/include" -I $CUDA_PREDIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
+    -I $TF_PREFIX"/include" -I $CUDA_PREFIX"/include" -I $TF_PREFIX"/include/external/nsync/public" \
     -lcudart -L $CUDA_PREDIX"/lib64/" -L $TF_PREFIX \
     -ltensorflow_framework -O2 -D_GLIBCXX_USE_CXX11_ABI=0 -I$TF_INC/external/nsync/public -L$TF_LIB -ltensorflow_framework
 
