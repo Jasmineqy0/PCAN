@@ -47,11 +47,13 @@ if not os.path.exists(RESULTS_FOLDER): os.mkdir(RESULTS_FOLDER)
 
 NUMBER_NEIBORS = 25
 
-DATABASE_FILE= os.path.join(os.path.dirname(BASE_DIR), 'datasets/pickles/python3.6/tum_evaluation_frame_5m_database.pickle')
-QUERY_FILE= os.path.join(os.path.dirname(BASE_DIR), 'datasets/pickles/python3.6/tum_evaluation_frame_5m_query.pickle')
+dist = '10m'
+model_type = 'baseline'
 
+DATABASE_FILE= os.path.join(os.path.dirname(BASE_DIR), f'datasets/pickles/python3.6/tum_evaluation_subpntcld_{dist}_database.pickle')
+QUERY_FILE= os.path.join(os.path.dirname(BASE_DIR), f'datasets/pickles/python3.6/tum_evaluation_subpntcld_{dist}_query.pickle')
 
-output_file= RESULTS_FOLDER +'baseline_results_'+dataset+'_'+model_file+'.txt'
+output_file= RESULTS_FOLDER + f'{model_type}_tum_evaluation_subpntcld_{dist}.txt'
 
 DATABASE_SETS= get_sets_dict(DATABASE_FILE)
 QUERY_SETS= get_sets_dict(QUERY_FILE)
